@@ -1,0 +1,103 @@
+.warehouse {
+    padding: 20px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 80vh; // Ensure the warehouse container takes full viewport height
+    width: 100%; // Ensures the warehouse takes the full width of the viewport
+
+    h3 {
+        color: #ffffff;
+        font-size: 2.2rem;
+        font-weight: bold;
+    }
+
+    p {
+        color: #e7dede;
+        font-size: 1.6rem;
+        margin-bottom: 10px;
+    }
+
+    .unit-box {
+        margin: 10px 0;
+        
+        input {
+            width: 50px;
+            padding: 5px;
+            text-align: center;
+        }
+    }
+
+    .unit-buttons {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        margin: 10px;
+        
+        button {
+            padding: 6px 10px;
+            font-size: 2rem;
+            cursor: pointer;
+            color: #fff;
+            background: #007bff;
+            border: 1px solid transparent;
+            border-radius: 3px;
+            margin: 10px;
+            
+        }
+    }
+
+    .rack-visualization {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        flex-grow: 1; // Ensures the visualization takes up remaining space after the card
+        height: 100%; // Ensures it fills the available height
+        width: 100%; // Take full width of the page
+        padding: 0 20px; // Add padding if needed for spacing
+
+        .box {
+            width: 50px;
+            height: 50px;
+            background-color: #ddd;
+            border: 1px solid #000;
+            margin: 5px;
+            text-align: center;
+            line-height: 50px; // vertically center the box emoji
+        }
+
+        p {
+            color: #ff0000;
+            font-size: 1.8rem;
+        }
+    }
+
+    .card {
+        border: 1px solid transparent;
+        border-radius: 5px;
+        box-shadow: var(--box-shadow);
+        overflow: hidden;
+        padding: 1.5rem;
+        background-color: #0a1930;
+        width: 100%; // Ensures card takes full width
+        margin: 0; // Remove any implicit margins
+    }
+
+    .btn {
+        font-size: 1.6rem;
+        font-weight: 400;
+        padding: 6px 8px;
+        margin: 0 auto 0;
+        border: 1px solid transparent;
+        border-radius: 3px;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #fff;
+        background-color: #007bff;
+    }
+}

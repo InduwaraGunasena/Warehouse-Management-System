@@ -1,0 +1,81 @@
+.home {
+  background-color: #4d1079;
+  min-height: 100vh;
+
+  & nav {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+    color: #fff;
+    & > .logo {
+      color: #fff;
+    }
+  }
+}
+.home-links {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  & li a {
+    color: #fff;
+  }
+  & > * {
+    margin-left: 1rem;
+    color: #fff;
+  }
+}
+
+.hero {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; // Set height to 100% of the viewport height to center vertically
+  flex-wrap: wrap; // Ensure the content wraps nicely on smaller screens
+}
+
+.hero-text {
+  width: 50%;
+  & > * {
+    color: #fff;
+    margin-bottom: 2rem;
+  }
+  & > h2 span {
+    display: block;
+  }
+  & .hero-buttons a {
+    color: #fff;
+  }
+}
+.hero-image {
+  width: 50%; // or a more suitable percentage if you want to make it smaller
+  max-width: 800px; // Sets a maximum width
+  margin: 0 auto; // Centers the image horizontally
+}
+
+.hero-image img {
+  width: 100%; // Ensure the image scales with its container
+  height: auto; // Maintain the aspect ratio
+}
+
+@media screen and (max-width: 600px) {
+  .hero {
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  .hero-text {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    margin: auto;
+    text-align: center;
+  }
+  .hero-image {
+    width: 100%;
+    max-width: 100%;
+    &img {
+      width: 100%;
+    }
+  }
+}

@@ -1,0 +1,168 @@
+.warehouse-map {
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+
+    hr {
+        width: 100%;
+        border: 1px solid var(#333);
+    }
+
+    .header {
+        display: flex;
+        justify-content: flex-start;
+        width: 100%;
+        padding: 10px 0;
+    }
+
+    .loader {
+        font-size: 20px;
+        color: grey;
+    }
+
+    .msg {
+        margin-top: 80px;
+    }
+
+    .box-container {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-top: 80px;
+        gap: 20px;
+    }
+
+    .box {
+        width: 80px;
+        height: 80px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        font-size: 2rem;
+        border-radius: 4px;
+        transition: background-color 0.3s;
+        cursor: pointer;
+
+        &:hover {
+            opacity: 0.5;
+        }
+    }
+
+    .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7); // Semi-transparent dark overlay
+        backdrop-filter: blur(5px); // Apply blur effect
+        z-index: 999; // Ensure it appears behind the popup but above other content
+    }
+
+    .product-popup {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 80vw;
+        max-width: 500px;
+        height: auto;
+        max-height: 500px;
+        background-color: white;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        padding: 20px;
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+
+        .popup-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            width: 100%;
+
+            img {
+                max-width: 80%;
+                height: auto;
+                margin-bottom: 20px;
+            }
+
+            p {
+                font-size: 1.8rem;
+                color: #333;
+                margin: 10px 0;
+            }
+        }
+
+        .close-button {
+            background-color: #007bff;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            font-size: 1.4rem;
+            cursor: pointer;
+            margin-top: auto;
+            align-self: center;
+
+            &:hover {
+                background-color: #0056b3;
+            }
+        }
+    }
+
+        .image-container {
+            position: relative;
+            display: inline-block;
+    
+            img {
+                max-width: 80%;
+                height: auto;
+                margin-bottom: 20px;
+            }
+    
+            .zoom-icon {
+                position: absolute;
+                bottom: 10px;
+                right: 10px;
+               // background-color: rgba(0, 0, 0, 0.5);
+                color: rgb(48, 48, 48);
+                border-radius: 50%;
+                padding: 5px;
+                cursor: pointer;
+                font-size: 1.2rem;
+    
+                &:hover {
+                    background-color: rgba(0, 0, 0, 0.7);
+                }
+            }
+        }
+
+                .zoom-modal {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background-color: rgba(0, 0, 0, 0.8);
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    z-index: 1001;
+        
+                    img {
+                        max-width: 90%;
+                        max-height: 90%;
+                        border-radius: 8px;
+                        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+                    }
+                }
+}
