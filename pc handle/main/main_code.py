@@ -6,16 +6,46 @@ import threading
 import numpy as np
 import requests
 import mimetypes
+import os
 
 backend_url = "http://localhost:5000"
-
 bluetooth_port = 'COM7'
 baud_rate = 9600  # Baud rate for HC-05/06 module
 
 marker_id = 0
 receive_ack = False
+is_stopped = False
 
 box_dict = {}
+
+frame_copy = None
+image_dir = "./images"
+os.makedirs(image_dir, exist_ok=True)
+
+
+def send_product_data(image_path, encoder_value, marker_ID, backend_url):
+    mime_type, _ = mimetypes.guess_type(image_path)
+    files = {
+        "image": (image_path, open(image_path, "rb"), mime_type)  # filename, file object, and MIME type
+    }
+    # Define the data payload
+    product_data = {
+        "position": encoder_value,
+        "marker_ID": marker_ID,
+        "status": "scanned"
+    }
+
+    # Send the POST request
+    try:
+        response = requests.post(f"{backend_url}/api/products/", data=product_data, files=files)
+        response.raise_for_status()  # Check for HTTP request errors
+
+        # Print success message and server response
+        print("Image and data successfully sent.")
+        print("Server response:", response.json())
+
+    except requests.exceptions.RequestException as e:
+        print("Failed to send product data:", e)
 
 
 def send_product_data(image_path, encoder_value, marker_ID, backend_url):
@@ -54,7 +84,7 @@ def sharpen_image(image):
 
 def aruco_detect():
     # Initialize the camera
-    global marker_id, receive_ack, marker_id
+    global marker_id, receive_ack, marker_id, frame_copy
 
     cap = cv2.VideoCapture(1)  #("http://192.168.205.167:4747/video")
 
@@ -72,7 +102,11 @@ def aruco_detect():
             print("Failed to grab frame")
             break
 
+        if is_stopped: # if robot came to the initial point after finished the task, stop reading aruco markers.
+            break
+
         frame = sharpen_image(frame)
+        frame_copy = frame.copy()
 
         # Get the dimensions of the camera frame
         frame_height, frame_width, _ = frame.shape
@@ -121,7 +155,7 @@ def aruco_detect():
                 # Calculate the horizontal distance between the two vertical lines (A and B)
                 horizontal_distance = (marker_center_x - frame_center_x)
 
-                if abs(horizontal_distance) < 50 and marker_id not in box_dict:
+                if abs(horizontal_distance) < 90 and marker_id not in box_dict:
                     send_msg("BOX")
                     print("===========Box Founded==============")
 
@@ -161,7 +195,7 @@ def send_msg(msg):
 
 
 def recv_msg(ser):
-    global receive_ack, marker_id
+    global receive_ack, marker_id, frame_copy, is_stopped
 
     try:
         while True:
@@ -171,6 +205,16 @@ def recv_msg(ser):
                 if "A" in response or "C" in response or "K" in response:
                     receive_ack = True
                     print("ACK received")
+
+                elif "S" in response or "T" in response or "O" in response or "P" in response:
+                    is_stopped = True
+                    print("Robot finished the task and stopped.")
+
+                    for marker_ID, encoder_value in box_dict.items():
+                        image_path = f"{image_dir}/{marker_ID}.jpg"
+                        send_product_data(image_path, encoder_value, marker_ID, backend_url)
+                    break
+
                 elif contains_number(response):
                     receive_ack = False
                     print("number received")
@@ -178,8 +222,8 @@ def recv_msg(ser):
                         encoder_value = int(response)
                         box_dict[marker_id] = encoder_value
                         print(f"Saved marker {marker_id} with encoder value {encoder_value}")
-                        filename = f"{marker_id}_{encoder_value}.jpg"
-                        cv2.imwrite(filename, frame)
+                        filename = os.path.join(image_dir, f"{marker_id}.jpg")
+                        cv2.imwrite(filename, frame_copy)
                         print(f"Image saved as {filename}")
                 else:
                     receive_ack = False
