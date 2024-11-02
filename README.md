@@ -5,7 +5,7 @@ It combines three key areas of my computer science and engineering curriculum: l
 using a U-Net architecture (Data Science part), a line-following robot (Embedded Systems part), and a
 web application for warehouse management (Software Engineering part).
 
-You can watch [this video](https://pages.github.com/) to know how this works .
+You can watch [this video](https://youtu.be/_sepXgfkpTE) to know how this works .
 
 ## Table of contents
 
@@ -166,6 +166,7 @@ Use `pc_handle/label_segmentation/.` jupyter notebook codes to prepare the datas
 - To clean your dataset from unwanted data you can use `Cleaning_images.ipynb` file.
 - To split your data set into train, test and valid, you can use `Data_Processing.ipynb` file.
 - To verify your annotations manually, you can use `Visualize_Dataset.ipynb` file.
+
 Every jupyter notebook incluedes neccesory details.
 
 ### Training the Model
