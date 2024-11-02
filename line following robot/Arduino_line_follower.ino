@@ -10,15 +10,15 @@ QTRSensors qtr;
 const uint8_t SensorCount = 8;
 uint16_t sensorValues[SensorCount];
 
-#define Kp                  0.5
-#define Ki               0.0001
-#define Kd                  2.3 // experiment to determine this, slowly increase the speeds and adjust this value. ( Note: Kp < Kd) 
+#define Kp                  0.5//0.18
+#define Ki               0.0001//0.00005
+#define Kd                  2.3//2.4     // experiment to determine this, slowly increase the speeds and adjust this value. ( Note: Kp < Kd) 
 
 
-#define rightMaxSpeed         100
-#define leftMaxSpeed          110
-#define rightMinSpeed         80
-#define leftMinSpeed          90
+#define rightMaxSpeed         90
+#define leftMaxSpeed          100
+#define rightMinSpeed         50
+#define leftMinSpeed          60
 
 bool dval[SensorCount];
 
@@ -52,6 +52,7 @@ int B_lastError, B_errorSum;
 #define addrCalibratedMinimumOn 0
 #define addrCalibratedMaximumOn 100
 
+
 long oldPosition_L  = -999;
 long oldPosition_R  = -999;
 long newPosition_L = 0;
@@ -60,15 +61,16 @@ long newPosition_R = 0;
 int error = 0;
 boolean received_msg = false;
 
+
 const byte numChars = 32;
 char receivedChars[numChars];   // an array to store the received data
 boolean newData = false;
+
 
 const int counts_per_rev = 1770;   // (4 pairs N-S) * (48:1 gearbox) * (2 falling/rising edges) = 384
 const int wheel_d = 70;           // Wheel diameter (mm)
 const float wheel_c = PI * wheel_d; // Wheel circumference (mm)
 boolean b = 0;
-
 
 void setup() {
   qtr.setTypeRC();
@@ -95,16 +97,15 @@ void setup() {
   bluetooth.begin(9600);
   //bluetooth.println("Hello, world?");
 
-//  digitalWrite(13, HIGH);
-//  delay(1000);
-//
-//  for (uint16_t i = 0; i < 400; i++)
-//  {
-//    qtr.calibrate();
-//  }
-//  storeQTR();
-//  digitalWrite(13, LOW);
-//  delay(1000);
+  digitalWrite(13, HIGH);
+  delay(1000);
+
+  for (uint16_t i = 0; i < 400; i++)
+  {
+    qtr.calibrate();
+  }
+  storeQTR();
+  digitalWrite(13, LOW);
   recallQTR();
   delay(5000);
   
@@ -117,7 +118,6 @@ void setup() {
 
 void loop() {
   recvWithEndMarker();
-
   if (newData == true && strcmp(receivedChars, "BOX") == 0) {
     Serial.println(receivedChars);
     
@@ -140,25 +140,28 @@ void loop() {
   } else {
     digitalWrite(13, LOW);
     line_follow();
-    //forward(40, 1); 
+    //Serial.println("line following");
     b = 0;
 
   }
 }
 
 void line_follow(){
-  qtrRead();
+  uint16_t u = qtrRead();
   //Serial.println(mode);
   
   if(mode == BLACK){
     driveStraight_cm(17, 30);
     stop();
-    delay(20000000);
+    bluetooth.println("STOP");
+    delay(100);
+    while(1);  // stop forever.
+    
   }else if(mode == WHITE){
     driveStraight_cm(5, 30);
     turn_back();
   }else{
-    PID_line_follow(10);
+    PID_line_follow(10, u);
   }
 }
 
@@ -219,7 +222,7 @@ void showNewData() {
 }
 
 
-void qtrRead() {
+uint16_t qtrRead() {
   uint16_t position = qtr.readLineBlack(sensorValues);
   for (uint8_t i = 0; i < SensorCount ; i++ )
   {
@@ -242,11 +245,12 @@ void qtrRead() {
   } else {
     mode = LINE;
   }
+  return position;
 }
 
 
-void PID_line_follow(int base_speed) {
-  int position = qtr.readLineBlack(sensorValues); // get calibrated readings along with the line position, refer to the QTR Sensors Arduino Library for more details on line position.
+void PID_line_follow(int base_speed, uint16_t position) {
+  //int position = qtr.readLineBlack(sensorValues); // get calibrated readings along with the line position, refer to the QTR Sensors Arduino Library for more details on line position.
   int error = position - 3500;
 
   errorSum += error * Ki;
@@ -311,6 +315,8 @@ void brake() {
 
   stop();
 }
+
+
 
 
 void driveStraight_cm(float dist, int power) {
@@ -472,10 +478,10 @@ void turn_back() {
     qtr.readLineBlack(sensorValues);
     digitalWrite(right1, HIGH);
     digitalWrite(right2, LOW);
-    analogWrite(rightEnable, 55);
+    analogWrite(rightEnable, 60);
     digitalWrite(left1, LOW);
     digitalWrite(left2, HIGH);
-    analogWrite(leftEnable, 65);
+    analogWrite(leftEnable, 70);
     delay(20);
   }
   
