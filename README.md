@@ -181,9 +181,7 @@ python main_code.py
 > Ensure Bluetooth is enabled on your PC, and set up a Wi-Fi webcam for image capture.
 
 > ## References
->
 > You can refer these things and might be helpful to change things.
->
-> - I followed the tutorial to build this WMS web application.
+> - I followed the `ZinoTrust Academy Inventory Amnagement` tutorial to build this WMS web application.
 > - If you don't know how to segment using U-Net, You can learn from [this video series](https://www.youtube.com/watch?v=Xh4r4akBibM&list=PL_Nji0JOuXg1OCpsGtHs6VyF-K6acaVgA&pp=iAQB).
 > - I implemented the U-Net architecture using [this](https://github.com/pagi-ai/U-Net) github repo.
