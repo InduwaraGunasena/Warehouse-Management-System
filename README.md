@@ -162,8 +162,11 @@ this image shows flow chart of this process.
 ### Creating Your Own Dataset
 
 First you need to collect some images (at least 100 for reliable results) and annotate them using tools like ImgLab.
-Use `label_segmentation/dataCreator` jupyter notebook codes to prepare the dataset for training.
-In there, it has some codes to verify annotations manually so it might heplful to ensure dataset accuracy.
+Use `pc_handle/label_segmentation/.` jupyter notebook codes to prepare the dataset for training.
+- To clean your dataset from unwanted data you can use `Cleaning_images.ipynb` file.
+- To split your data set into train, test and valid, you can use `Data_Processing.ipynb` file.
+- To verify your annotations manually, you can use `Visualize_Dataset.ipynb` file.
+Every jupyter notebook incluedes neccesory details.
 
 ### Training the Model
 
@@ -182,6 +185,6 @@ python main_code.py
 
 > ## References
 > You can refer these things and might be helpful to change things.
-> - I followed the `ZinoTrust Academy Inventory Amnagement` tutorial to build this WMS web application.
+> - I followed the `ZinoTrust Academy Inventory Management` tutorial to build this WMS web application.
 > - If you don't know how to segment using U-Net, You can learn from [this video series](https://www.youtube.com/watch?v=Xh4r4akBibM&list=PL_Nji0JOuXg1OCpsGtHs6VyF-K6acaVgA&pp=iAQB).
 > - I implemented the U-Net architecture using [this](https://github.com/pagi-ai/U-Net) github repo.
